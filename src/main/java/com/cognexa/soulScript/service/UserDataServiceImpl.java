@@ -7,6 +7,7 @@ import com.cognexa.soulScript.exception.UserAlreadyExistsException;
 import com.cognexa.soulScript.exception.UserNotFoundException;
 import com.cognexa.soulScript.mapper.UserDataMapper;
 import com.cognexa.soulScript.repository.UserDataRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,7 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
+    @Transactional
     public UserDataResponseDTO saveUserData(UserDataRequestDTO userDataRequestDTO){
         if (!verifyUserDataByUsername(userDataRequestDTO.getUsername())) {
             throw new UserAlreadyExistsException("Existing user detected");

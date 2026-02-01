@@ -7,6 +7,7 @@ import com.cognexa.soulScript.entity.UserData;
 import com.cognexa.soulScript.exception.JournalNotFoundException;
 import com.cognexa.soulScript.mapper.JournalEntryMapper;
 import com.cognexa.soulScript.repository.JournalEntryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,6 +51,7 @@ public class JournalEntryServiceImpl implements JournalEntryService {
     }
 
     @Override
+    @Transactional
     public JournalEntryResponseDTO saveJournalEntry(JournalEntryRequestDTO dto, Long userId) {
         UserData userData = userDataService.findUserDataById(userId);
         JournalEntry entry = JournalEntryMapper.toEntity(dto);
@@ -58,6 +60,7 @@ public class JournalEntryServiceImpl implements JournalEntryService {
     }
 
     @Override
+    @Transactional
     public JournalEntryResponseDTO updateJournalEntry(Long id, Map<String, Object> updates) {
         JournalEntry entry = repository.findById(id)
                 .orElseThrow(() -> new JournalNotFoundException("Journal Entry not found"));
@@ -84,6 +87,7 @@ public class JournalEntryServiceImpl implements JournalEntryService {
 
 
     @Override
+    @Transactional
     public void deleteJournalEntryById(Long id) {
         if (!repository.existsById(id)) {
             throw new JournalNotFoundException("Request journal does not exists or has already been deleted");
